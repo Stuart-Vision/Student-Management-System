@@ -11,13 +11,11 @@ class StudentController extends Controller
 {
     public function index(): View
     {
-        $students = Student::all(); // Fetch all students
+        $students = Student::all(); 
         return view('students.index', compact('students'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    
     public function create(): View
     {
         return view('students.create');
@@ -39,41 +37,33 @@ class StudentController extends Controller
         return redirect()->route('students.index')->with('flash_message', 'Student Added!');
     }
 
-    /**
-     * Display the specified resource.
-     */
+   
     public function show(string $id): View
     {
         $student = Student::findOrFail($id);
-        return view('students.show')->with('student', $student);
+        return view('students.show', compact('student'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+  
     public function edit(string $id): View
     {
         $student = Student::findOrFail($id);
-        return view('students.edit')->with('student', $student);
+        return view('students.edit', compact('student'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(Request $request, string $id): RedirectResponse
     {
-        $student = Student::find($id);
-        $input = $request->all();
-        $student->update($input);
-        return redirect('students')->with('flash_message', 'student Updated!');  
+        $student = Student::findOrFail($id); 
+        $student->update($request->all());
+
+        return redirect()->route('students.index')->with('flash_message', 'Student Updated!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+   
     public function destroy(string $id): RedirectResponse
     {
         Student::destroy($id);
-        return redirect('students')->with('flash_message', 'Student deleted!'); 
+        return redirect()->route('students.index')->with('flash_message', 'Student deleted!');
     }
 }
